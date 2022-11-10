@@ -1,6 +1,6 @@
 # EPWS2223ZieglerMausKolahi
 
-## Exposé -Mental Health Access- (working title) 
+## Exposé PsycHelp
 **im Rahmen des Entwicklungsprojektes**
 
 **vorgelegt von:**   
