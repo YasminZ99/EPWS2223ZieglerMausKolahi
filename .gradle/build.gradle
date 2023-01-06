@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.6'   //change this with latest gradle version.
+    }
+}
+
+
+
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -46,4 +58,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+allprojects {
+    repositories {
+        jcenter()
+        google()
+    }
 }
