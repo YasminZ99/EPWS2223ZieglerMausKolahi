@@ -1,5 +1,6 @@
 # EPWS2223ZieglerMausKolahi
 
+Projektplan:
 https://miro.com/app/board/uXjVP2fu5zU=/
 
 ## Exposé PsycHelp
