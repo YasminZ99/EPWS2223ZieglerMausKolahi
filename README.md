@@ -10,7 +10,7 @@ Code
 
 https://github.com/ZoeSuam/PsychHelpApp.git
 
-PsycHelp App+DB
+
 
 
 ## Exposé PsycHelp
