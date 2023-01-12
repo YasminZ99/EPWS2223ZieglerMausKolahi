@@ -8,7 +8,7 @@ https://www.figma.com/proto/c9G3wt34YlxQroX9yAWTTU/Entwicklungsprojekt?page-id=0
 
 PsycHelp App+DB
 
-https://github.com/Elahekolahi/PsycHelp_Database.git
+
 ## Exposé PsycHelp
 **im Rahmen des Entwicklungsprojektes**
 
