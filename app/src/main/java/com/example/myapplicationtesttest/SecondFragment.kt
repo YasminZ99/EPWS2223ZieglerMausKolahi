@@ -39,8 +39,8 @@ class SecondFragment : Fragment() {
         _binding = FragmentSecondBinding.inflate(inflater, container, false)
 
 
-        //Diese zeile bringt die App zum abstürzen
-        mDoctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
+        //Diese zeile bringt die App zum abstürzen!!!!!!!!!!!!!!!!!!!!!!!!!
+//        mDoctorViewModel = ViewModelProvider(this).get(DoctorViewModel::class.java)
 
 
 
