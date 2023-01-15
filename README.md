@@ -3,15 +3,11 @@
 ### Projektplan:
 https://miro.com/app/board/uXjVP2fu5zU=/
 
-### Funktionaler Prototyp (Code + Figma):
+###  Prototyp  Figma:
 https://www.figma.com/proto/c9G3wt34YlxQroX9yAWTTU/Entwicklungsprojekt?page-id=0%3A1&node-id=102%3A1510&viewport=322%2C-857%2C0.67&scaling=scale-down&starting-point-node-id=1%3A33
 
-Code
-
-https://github.com/ZoeSuam/PsychHelpApp.git
-
-
-
+### Funktionaler Prototyp: 
+Wechsel vom Main Branch zum Master Branch 
 
 ## Exposé PsycHelp
 **im Rahmen des Entwicklungsprojektes**
