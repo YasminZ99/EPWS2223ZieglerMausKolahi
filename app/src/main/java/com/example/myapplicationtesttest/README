@@ -1,0 +1,7 @@
+
+- im package navigation liegt die datei nav_graph dort wird der wechsel zu den unterschiedlichen "Bildschirmen" angezeigt.
+        Die Pfeile haben eine ID die in den Fragments bei den entsprechen
+
+- unter res/ layout/custom_row befindet sich das design für die RecyclerView
+
+- compile sdk in build.gradle manuell von 32 auf 33 geändert
