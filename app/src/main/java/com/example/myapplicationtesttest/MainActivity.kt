@@ -1,6 +1,7 @@
 package com.example.myapplicationtesttest
 
 import android.os.Bundle
+import android.provider.ContactsContract.Contacts
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -11,7 +12,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import com.example.myapplicationtesttest.data.Contact
 import com.example.myapplicationtesttest.databinding.ActivityMainBinding
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +28,31 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this)
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("contacts")
+        val contact = Contact()
+        contact.name = "Ursula"
+        contact.phoneNumber = "00000"
+        myRef.push().setValue(contact.toMap())
+
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val contacts = ArrayList<Contact>()
+                for (postSnapshot in dataSnapshot.children) {
+                    val contact = postSnapshot.getValue(Contact::class.java)
+                    contacts.add(contact!!)
+                }
+
+                // do something with the contacts list
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // handle error
+            }
+        })
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
