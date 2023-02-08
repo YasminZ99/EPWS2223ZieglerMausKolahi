@@ -56,10 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
         val contact = Contact("Ursula","0000000")
-        addContactFB(contact)
 
-        val addButton = findViewById<Button>(R.id.buttonAdd)
-        addButton.setOnClickListener { addContactFB(contact) }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -74,6 +71,7 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+        binding.buttonAdd.setOnClickListener {addContactFB(contact)  }
 
     }
 
