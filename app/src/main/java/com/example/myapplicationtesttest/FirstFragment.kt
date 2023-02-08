@@ -39,6 +39,9 @@ class FirstFragment : Fragment() {
         binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
+        binding.buttonAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_insertFragment)
+        }
         // Wechsel zum Profilbildschirm
         binding.ProfilButton.setOnClickListener{
             findNavController().navigate(R.id.action_FirstFragment_to_profilFragment)

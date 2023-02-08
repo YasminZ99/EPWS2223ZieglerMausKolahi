@@ -50,6 +50,7 @@ android {
         //Room Database
         implementation 'androidx.room:room-common:2.5.0'
         implementation "androidx.room:room-runtime:2.5.0"
+        implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
         annotationProcessor "androidx.room:room-compiler:2.5.0"
         testImplementation 'junit:junit:4.13.2'
         androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -63,3 +64,4 @@ android {
         // When using the BoM, don't specify versions in Firebase dependencies
         implementation 'com.google.firebase:firebase-analytics-ktx'
     }
+apply plugin: 'com.google.gms.google-services'

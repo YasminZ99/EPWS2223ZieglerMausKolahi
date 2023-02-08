@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_profilFragment"
             app:destination="@id/profilFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_insertFragment"
+            app:destination="@id/insertFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -37,4 +40,14 @@
             android:id="@+id/action_profilFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+    <activity
+        android:id="@+id/insertionActivity"
+        android:name="com.example.myapplicationtesttest.insertionActivity"
+        android:label="activity_insertion"
+        tools:layout="@layout/activity_insertion" />
+    <fragment
+        android:id="@+id/insertFragment"
+        android:name="com.example.myapplicationtesttest.InsertFragment"
+        android:label="fragment_insert"
+        tools:layout="@layout/fragment_insert" />
 </navigation>
