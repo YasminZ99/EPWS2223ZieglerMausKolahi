@@ -33,10 +33,12 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("contacts")
-        val contact = Contact()
-        contact.name = "Ursula"
-        contact.phoneNumber = "00000"
-        myRef.push().setValue(contact.toMap())
+
+        fun addContactFB (contact: Contact) {
+            val newContact = myRef.push()
+            newContact.setValue(contact.toMap())
+
+        }
 
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -53,6 +55,11 @@ class MainActivity : AppCompatActivity() {
                 // handle error
             }
         })
+        val contact = Contact("Ursula","0000000")
+        addContactFB(contact)
+
+        val addButton = findViewById<Button>(R.id.buttonAdd)
+        addButton.setOnClickListener { addContactFB(contact) }
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
