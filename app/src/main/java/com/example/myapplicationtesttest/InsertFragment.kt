@@ -30,6 +30,11 @@ class InsertFragment : Fragment() {
         arguments?.let {
         }
 
+        dbRef = database.getReference("Contacts")
+        binding.buttonSave.setOnClickListener {
+            saveData()
+        }
+
     }
 
     override fun onCreateView(
@@ -37,11 +42,8 @@ class InsertFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_insert, container, false)
-        dbRef = database.getReference("Contacts")
-        binding.buttonSave.setOnClickListener {
-            saveData()
-        }
     }
 
     private fun saveData() {
