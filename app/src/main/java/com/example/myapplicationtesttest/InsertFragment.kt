@@ -1,18 +1,16 @@
 package com.example.myapplicationtesttest
 
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.example.myapplicationtesttest.data.Contact
-import com.example.myapplicationtesttest.databinding.FragmentFirstBinding
-import com.example.myapplicationtesttest.databinding.FragmentInsertBinding
-import com.google.firebase.database.DatabaseReference
+import android.widget.Button
+import android.widget.EditText
+import androidx.fragment.app.Fragment
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+
 
 /**
  * A simple [Fragment] subclass.
@@ -21,51 +19,46 @@ import com.google.firebase.ktx.Firebase
  */
 class InsertFragment : Fragment() {
 
-    private lateinit var binding: FragmentInsertBinding
-    private lateinit var dbRef: DatabaseReference
-    val database = Firebase.database
+        private lateinit var database: FirebaseDatabase
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
+        @SuppressLint("MissingInflatedId")
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            // Inflate the layout for this fragment
+            val view = inflater.inflate(R.layout.fragment_insert, container, false)
+
+            // Initialize Firebase Database
+            database = FirebaseDatabase.getInstance()
+
+            // Get references to the EditText views
+            val nameEditText = view.findViewById<EditText>(R.id.nameText)
+            val phoneEditText = view.findViewById<EditText>(R.id.phoneText)
+
+            // Get a reference to the button
+            val submitButton = view.findViewById<Button>(R.id.submitButton)
+
+            // Set an OnClickListener on the button
+            submitButton.setOnClickListener {
+                try {
+                    // Get the values entered in the EditText views
+                    val name = nameEditText.text.toString()
+                    val phone = phoneEditText.text.toString()
+
+                    // Create a new database reference
+                    val myRef = database.getReference("https://psychelp-9f7d5-default-rtdb.europe-west1.firebasedatabase.app/")
+
+                    // Push the data to the database
+                    myRef.push().setValue(mapOf(
+                        "name" to name,
+                        "phone" to phone
+                    ))
+                } catch (e: Exception) {
+                    Log.e("MyFragment", "Error pushing data to the database", e)
+                }
+            }
+
+            return view
         }
-
-        dbRef = database.getReference("Contacts")
-        binding.buttonSave.setOnClickListener {
-            saveData()
-        }
-
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-
-        return inflater.inflate(R.layout.fragment_insert, container, false)
-    }
-
-    private fun saveData() {
-        val name = binding.editName.text.toString()
-        val phone = binding.editPhone.text.toString()
-
-        if (name.isEmpty()) {
-            binding.editName.error = "please enter name"
-        }
-        if (phone.isEmpty()) {
-            binding.editPhone.error = "please enter phone"
-        }
-        val id = dbRef.push().key!!
-        val contact = Contact(id, name, phone)
-        dbRef.child(id).setValue(contact).addOnCompleteListener {
-//            Toast.makeText(this, "Data inserted succesfully", Toast.LENGTH_LONG).show()
-//        }.addOnFailureListener { err ->
-//            Toast.makeText(
-//                this,
-//                "Error ${err.message}",
-//                Toast.LENGTH_LONG
-//            ).show()
-//        }
-        }
-    }}
