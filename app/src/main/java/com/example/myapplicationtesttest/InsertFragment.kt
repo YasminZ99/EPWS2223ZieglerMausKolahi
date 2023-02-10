@@ -47,7 +47,7 @@ class InsertFragment : Fragment() {
                     val phone = phoneEditText.text.toString()
 
                     // Create a new database reference
-                    val myRef = database.getReference("https://psychelp-9f7d5-default-rtdb.europe-west1.firebasedatabase.app/")
+                    val myRef = database.getReference()
 
                     // Push the data to the database
                     myRef.push().setValue(mapOf(

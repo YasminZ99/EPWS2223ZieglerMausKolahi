@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "761757547248",
-    "project_id": "psychelp-9f7d5",
-    "storage_bucket": "psychelp-9f7d5.appspot.com"
+    "project_number": "87443882774",
+    "project_id": "psychelp-f0c14",
+    "storage_bucket": "psychelp-f0c14.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:761757547248:android:65f30b8c57bec8dc9ca035",
+        "mobilesdk_app_id": "1:87443882774:android:1f4f5005d445add2784637",
         "android_client_info": {
           "package_name": "com.example.myapplicationtesttest"
         }
       },
       "oauth_client": [
         {
-          "client_id": "761757547248-nagm7l2aic3lvm6igk1m7k9v7dh5u8qj.apps.googleusercontent.com",
+          "client_id": "87443882774-8rpdidr6cj6ejj4ia3hcqre39pdli4fv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDsF6TzYt8NeDqAquW9nXZf7_Zs0tRuEAY"
+          "current_key": "AIzaSyAQxAAbm7UzMIoh77tEALgnoePXD9H3iL8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "761757547248-nagm7l2aic3lvm6igk1m7k9v7dh5u8qj.apps.googleusercontent.com",
+              "client_id": "87443882774-8rpdidr6cj6ejj4ia3hcqre39pdli4fv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

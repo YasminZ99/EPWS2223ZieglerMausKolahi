@@ -2,8 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id("kotlin-parcelize")
-    //Google Services Gradle Plugin
     id 'com.google.gms.google-services'
+    //Google Services Gradle Plugin
 }
 
 android {
@@ -42,11 +42,9 @@ android {
 
         implementation 'androidx.core:core-ktx:1.7.0'
         implementation 'androidx.appcompat:appcompat:1.5.1'
-        implementation 'com.google.android.material:material:1.7.0'
         implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
         implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
         implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-        implementation 'com.google.code.gson:gson:2.8.6'
 
         //Room Database
         implementation 'androidx.room:room-common:2.5.0'
@@ -64,5 +62,7 @@ android {
         implementation 'com.google.firebase:firebase-database:18.0.0'
         // When using the BoM, don't specify versions in Firebase dependencies
         implementation 'com.google.firebase:firebase-analytics-ktx'
+
+        implementation 'com.google.code.gson:gson:2.8.6'
     }
 apply plugin: 'com.google.gms.google-services'
