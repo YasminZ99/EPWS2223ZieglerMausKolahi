@@ -1,0 +1,16 @@
+ fun readData(string: String) {
+
+        database = FirebaseDatabase.getInstance().getReference("Contacts")
+        database.child(string).get().addOnSuccessListener {
+            if (it.exists()) {
+                val name = it.child("name").value
+                val phone = it.child("phone").value
+
+                binding.editTextSucheName.text.clear()
+                binding.tvName.text = name.toString()
+                binding.tvPhone.text = phone.toString()
+            }
+            //  else Toast.makeText(this,"no matching results",Toast.LENGTH_SHORT).show()
+        }
+    }
+
