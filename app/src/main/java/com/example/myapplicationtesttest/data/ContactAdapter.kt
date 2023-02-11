@@ -20,6 +20,7 @@ class ContactAdapter(private val context: Context, private val contactList: List
         val contact = contactList[position]
         holder.nameTextView.text = contact.name
         holder.phoneTextView.text = contact.phone
+        holder.placeTextView.text = contact.place
     }
 
     override fun getItemCount(): Int {

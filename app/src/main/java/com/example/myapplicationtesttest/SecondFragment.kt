@@ -22,59 +22,56 @@ import com.google.firebase.ktx.Firebase
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
 
-class SecondFragment : Fragment() {
+class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSecondBinding
     private lateinit var database: FirebaseDatabase
+    private lateinit var contactsReference: DatabaseReference
+    private lateinit var adapter: ContactAdapter
+    private var matchingContacts = mutableListOf<Contact>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Inflate the layout for this fragment
         binding = FragmentSecondBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         database = FirebaseDatabase.getInstance()
-        initRecyclerView()
+        contactsReference = database.reference.child("contacts")
+
+        // Set the layout manager for the recycler view
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
         binding.Searchbutton.setOnClickListener {
             searchData()
         }
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
-        }
-    }
 
-    private fun initRecyclerView() {
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        return binding.root
     }
 
     private fun searchData() {
-        val searchTerm = binding.editTextSucheName.text.toString()
-        val matchingContacts = mutableListOf<Contact>()
+        val searchInput = binding.editTextSucheName.text.toString().trim()
 
-        val reference = database.getReference("contacts")
-        reference.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (snapshot in dataSnapshot.children) {
-                    val contact = snapshot.getValue(Contact::class.java)
-                    if (contact != null && contact.name!!.contains(searchTerm)) {
+        if (searchInput.isEmpty()) {
+            return
+        }
+
+        contactsReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                matchingContacts.clear()
+                for (contactSnapshot in snapshot.children) {
+                    val contact = contactSnapshot.getValue(Contact::class.java)
+                    if (contact != null && contact.name!!.contains(searchInput, ignoreCase = true)) {
                         matchingContacts.add(contact)
                     }
                 }
-                updateRecyclerView(matchingContacts)
+                adapter = ContactAdapter(requireContext(), matchingContacts)
+                binding.recyclerView.adapter = adapter
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("SearchFragment", "Failed to read value.", error.toException())
+                // Handle error
             }
         })
-    }
-
-    private fun updateRecyclerView(matchingContacts: List<Contact>) {
-        val adapter = ContactAdapter(requireContext(), matchingContacts)
-        binding.recyclerView.adapter = adapter
     }
 }
