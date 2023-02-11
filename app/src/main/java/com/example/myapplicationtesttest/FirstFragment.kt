@@ -16,8 +16,7 @@ import com.example.myapplicationtesttest.databinding.FragmentFirstBinding
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
-//    private lateinit var searchButton: Button
-//    private lateinit var profilButton: Button
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.

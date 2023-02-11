@@ -53,6 +53,8 @@ class InsertFragment : Fragment() {
                         "name" to name,
                         "phone" to phone
                     ))
+                   myRef.child("Contacts").setValue(name);
+
                 } catch (e: Exception) {
                     Log.e("MyFragment", "Error pushing data to the database", e)
                 }
