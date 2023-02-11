@@ -1,5 +1,4 @@
 package com.example.myapplicationtesttest
-
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
