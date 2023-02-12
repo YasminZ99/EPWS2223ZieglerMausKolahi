@@ -1,6 +1,7 @@
 package com.example.myapplicationtesttest
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,16 +47,20 @@ class SecondFragment : Fragment() {
         val query = contactsReference.orderByChild("name").startAt(searchTerm).endAt(searchTerm + "\uf8ff")
         query.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (contactSnapshot in dataSnapshot.children) {
-                    val contact = contactSnapshot.getValue(Contact::class.java)
-                    matchingContacts.add(contact!!)
+                try {
+                    for (contactSnapshot in dataSnapshot.children) {
+                        val contact = contactSnapshot.getValue(Contact::class.java)
+                        matchingContacts.add(contact!!)
+                    }
+                    val adapter = ContactAdapter(requireContext(), matchingContacts)
+                    binding.recyclerView.adapter = adapter
+                } catch (e: Exception) {
+                    Log.e("SecondFragment", "Error in searchData: $e")
                 }
-                val adapter = ContactAdapter(requireContext(), matchingContacts)
-                binding.recyclerView.adapter = adapter
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
+                Log.e("SecondFragment", "Error in searchData: ${databaseError.message}")
             }
         })
     }
