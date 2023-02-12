@@ -40,22 +40,24 @@ android {
 
     dependencies {
 
-        implementation 'androidx.core:core-ktx:1.7.0'
-        implementation 'androidx.appcompat:appcompat:1.5.1'
+        implementation 'androidx.core:core-ktx:1.9.0'
+        implementation 'androidx.appcompat:appcompat:1.6.1'
         implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
         implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
         implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-
+        implementation 'com.google.android.material:material:1.8.0'
 
 
         //Firebase
         // Import the Firebase BoM
         implementation platform('com.google.firebase:firebase-bom:31.2.0')
-        implementation 'com.google.firebase:firebase-core:16.0.9'
-        implementation 'com.google.firebase:firebase-database:18.0.0'
+        implementation 'com.google.firebase:firebase-core:21.1.1'
+        implementation 'com.google.firebase:firebase-database:20.1.0'
+        // Dependency FirebaseUI for Firebase Realtime Database
+        implementation 'com.firebaseui:firebase-ui-database:6.2.1'
         // When using the BoM, don't specify versions in Firebase dependencies
         implementation 'com.google.firebase:firebase-analytics-ktx'
 
-        implementation 'com.google.code.gson:gson:2.8.6'
+        implementation 'com.google.code.gson:gson:2.9.0'
     }
 apply plugin: 'com.google.gms.google-services'

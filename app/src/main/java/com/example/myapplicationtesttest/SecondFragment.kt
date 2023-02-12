@@ -1,6 +1,7 @@
 package com.example.myapplicationtesttest
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,6 @@ class SecondFragment : Fragment() {
     private lateinit var database: FirebaseDatabase
     private lateinit var contactsReference: DatabaseReference
     private val matchingContacts = mutableListOf<Contact>()
-    private lateinit var adapter: ContactAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,9 +33,7 @@ class SecondFragment : Fragment() {
             searchData()
         }
 
-        adapter = ContactAdapter(requireContext(), matchingContacts)
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.adapter = adapter
 
         return binding.root
     }
@@ -47,18 +45,23 @@ class SecondFragment : Fragment() {
         }
 
         val query = contactsReference.orderByChild("name").startAt(searchTerm).endAt(searchTerm + "\uf8ff")
-        query.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (contactSnapshot in dataSnapshot.children) {
-                    val contact = contactSnapshot.getValue(Contact::class.java)
-                    matchingContacts.add(contact!!)
+        try {
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (contactSnapshot in dataSnapshot.children) {
+                        val contact = contactSnapshot.getValue(Contact::class.java)
+                        matchingContacts.add(contact!!)
+                    }
+                    val adapter = ContactAdapter(requireContext(), matchingContacts)
+                    binding.recyclerView.adapter = adapter
                 }
-                adapter.notifyDataSetChanged()
-            }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
-            }
-        })
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle errors
+                }
+            })
+        } catch (e: Exception) {
+            e.message?.let { Log.e("Error", it) }
+        }
     }
 }
