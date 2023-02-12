@@ -1,67 +1,82 @@
 package com.example.myapplicationtesttest
 
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtesttest.data.Contact
 import com.example.myapplicationtesttest.data.ContactAdapter
-import com.example.myapplicationtesttest.databinding.FragmentSecondBinding
-import com.google.firebase.database.*
+import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.Query
+
 
 class SecondFragment : Fragment() {
-    private lateinit var binding: FragmentSecondBinding
-    private lateinit var database: FirebaseDatabase
-    private lateinit var contactsReference: DatabaseReference
-    private val matchingContacts = mutableListOf<Contact>()
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var searchEditText: EditText
+    private lateinit var databaseReference: DatabaseReference
+    private lateinit var adapter: ContactAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSecondBinding.inflate(inflater, container, false)
+        val view = inflater.inflate(R.layout.fragment_second, container, false)
+        recyclerView = view.findViewById(R.id.recyclerView)
+        searchEditText = view.findViewById(R.id.editTextSucheName)
 
-        database = FirebaseDatabase.getInstance()
-        contactsReference = database.getReference("contacts")
+        databaseReference = FirebaseDatabase.getInstance().reference.child("contacts")
 
-        binding.Searchbutton.setOnClickListener {
-            matchingContacts.clear()
-            searchData()
-        }
+        val query = databaseReference.orderByChild("name")
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        val options = FirebaseRecyclerOptions.Builder<Contact>()
+            .setQuery(query, Contact::class.java)
+            .build()
 
-        return binding.root
+        adapter = ContactAdapter(options)
+        recyclerView.adapter = adapter
+
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // do nothing
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // do nothing
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val searchText = searchEditText.text.toString().trim()
+                searchContacts(searchText)
+            }
+        })
+
+        return view
     }
 
-    private fun searchData() {
-        val searchTerm = binding.editTextSucheName.text.toString().trim()
-        if (searchTerm.isEmpty()) {
-            return
-        }
+    private fun searchContacts(query: String) {
+        val firebaseSearchQuery: Query = databaseReference
+            .orderByChild("name")
+            .startAt(query)
+            .endAt(query + "\uf8ff")
 
-        val query = contactsReference.orderByChild("name").startAt(searchTerm).endAt(searchTerm + "\uf8ff")
-        try {
-            query.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (contactSnapshot in dataSnapshot.children) {
-                        val contact = contactSnapshot.getValue(Contact::class.java)
-                        matchingContacts.add(contact!!)
-                    }
-                    val adapter = ContactAdapter(requireContext(), matchingContacts)
-                    binding.recyclerView.adapter = adapter
-                }
+        val firebaseRecyclerOptions: FirebaseRecyclerOptions<Contact> =
+            FirebaseRecyclerOptions.Builder<Contact>()
+                .setQuery(firebaseSearchQuery, Contact::class.java)
+                .build()
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Handle errors
-                }
-            })
-        } catch (e: Exception) {
-            e.message?.let { Log.e("Error", it) }
-        }
+        adapter = ContactAdapter(firebaseRecyclerOptions)
+        recyclerView.adapter = adapter
+        adapter.startListening()
     }
+
 }
+
+

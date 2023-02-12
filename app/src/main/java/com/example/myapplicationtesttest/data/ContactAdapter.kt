@@ -1,35 +1,35 @@
 package com.example.myapplicationtesttest.data
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtesttest.R
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class ContactAdapter(private val context: Context, private val contactList: List<Contact>) :
-    RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
+class ContactAdapter(options: FirebaseRecyclerOptions<Contact>) :
+    FirebaseRecyclerAdapter<Contact, ContactAdapter.ContactViewHolder>(options) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.contact_item, parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.contact_item, parent, false)
+        return ContactViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val contact = contactList[position]
-        holder.nameTextView.text = contact.name
-        holder.phoneTextView.text = contact.phone
-        holder.placeTextView.text = contact.place
+    override fun onBindViewHolder(holder: ContactViewHolder, position: Int, model: Contact) {
+        holder.bind(model)
     }
 
-    override fun getItemCount(): Int {
-        return contactList.size
-    }
+    class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val nameTextView = itemView.findViewById<TextView>(R.id.nameTextView)
+        private val phoneTextView = itemView.findViewById<TextView>(R.id.phoneTextView)
+        private val placeTextView = itemView.findViewById<TextView>(R.id.placeTextView)
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nameTextView: TextView = itemView.findViewById(R.id.name_text_view)
-        val phoneTextView: TextView = itemView.findViewById(R.id.phone_text_view)
-        val placeTextView: TextView = itemView.findViewById(R.id.phone_text_view)
+        fun bind(contact: Contact) {
+            nameTextView.text = contact.name
+            phoneTextView.text = contact.phone
+            placeTextView.text = contact.place
+        }
     }
 }
