@@ -48,13 +48,13 @@ class LoginFragment : Fragment () {
     }
 
     private fun loginUser(email: String, pass: String) {
-        mAuth.signInWithEmailAndPassword(email, pass)/*.addOnCompleteListener {
+        mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
              if (it.isSuccessful)
-                navController.navigate(R.id)
+                navController.navigate(R.id.action_loginFragment2_to_profilMain)
               else
                   Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
 
-          }*/
+          }
     }
 
     private fun init(view: View) {

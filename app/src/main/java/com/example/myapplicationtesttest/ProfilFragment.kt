@@ -3,7 +3,6 @@ package com.example.myapplicationtesttest
 import android.os.Bundle
 import android.widget.Toast
 import com.example.myapplicationtesttest.databinding.FragmentProfilBinding
-import com.example.myapplicationtesttest.R
 import com.google.firebase.auth.FirebaseAuth
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -56,8 +55,14 @@ class ProfilFragment : Fragment () {
     }
 
    private fun registerUser(email: String, pass: String) {
-        mAuth.createUserWithEmailAndPassword(email, pass)
-    }
+        mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
+            if (it.isSuccessful)
+                navController.navigate(R.id.action_ProfilFragment_to_profilMain)
+            else
+                Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
+
+        }
+   }
 
     private fun init(view: View) {
         navController = Navigation.findNavController(view)
