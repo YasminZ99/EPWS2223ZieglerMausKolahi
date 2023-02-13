@@ -32,9 +32,9 @@ class ProfilFragment : Fragment () {
 
 
         init(view)
-        /*binding.textLogin.setOnClickListener {
-            navController.navigate(R.id. ... )
-        }*/
+        binding.textLogin.setOnClickListener {
+            navController.navigate(R.id.action_ProfilFragment_to_loginFragment2)
+        }
 
         binding.SignUpB.setOnClickListener {
             val email = binding.emailSignUp.text.toString()
