@@ -16,7 +16,7 @@
             app:destination="@id/SecondFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_profilFragment"
-            app:destination="@id/profilFragment" />
+            app:destination="@id/ProfilFragment" />
         <action
             android:id="@+id/action_FirstFragment_to_insertFragment"
             app:destination="@id/insertFragment" />
@@ -32,13 +32,19 @@
             app:destination="@id/FirstFragment" />
     </fragment>
     <fragment
-        android:id="@+id/profilFragment"
+        android:id="@+id/ProfilFragment"
         android:name="com.example.myapplicationtesttest.ProfilFragment"
         android:label="fragment_profil"
         tools:layout="@layout/fragment_profil" >
         <action
             android:id="@+id/action_profilFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_ProfilFragment_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+        <action
+            android:id="@+id/action_ProfilFragment_to_profilMain"
+            app:destination="@id/profilMain" />
     </fragment>
     <activity
         android:id="@+id/insertionActivity"
@@ -50,4 +56,21 @@
         android:name="com.example.myapplicationtesttest.InsertFragment"
         android:label="fragment_insert"
         tools:layout="@layout/fragment_insert" />
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="com.example.myapplicationtesttest.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment2_to_ProfilFragment"
+            app:destination="@id/ProfilFragment" />
+        <action
+            android:id="@+id/action_loginFragment2_to_profilMain"
+            app:destination="@id/profilMain" />
+    </fragment>
+    <fragment
+        android:id="@+id/profilMain"
+        android:name="com.example.myapplicationtesttest.ProfilMain"
+        android:label="fragment_profil_main"
+        tools:layout="@layout/fragment_profil_main" />
 </navigation>
