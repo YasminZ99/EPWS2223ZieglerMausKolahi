@@ -13,6 +13,13 @@
         android:theme="@style/Theme.MyApplicationtestTest"
         tools:targetApi="31">
         <activity
+            android:name=".ShowContacts"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".insertionActivity"
             android:exported="false">
             <meta-data
