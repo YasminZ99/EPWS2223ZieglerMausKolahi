@@ -6,77 +6,76 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtesttest.data.Contact
 import com.example.myapplicationtesttest.data.ContactAdapter
+import com.example.myapplicationtesttest.databinding.ActivityMainBinding
+import com.example.myapplicationtesttest.databinding.FragmentSecondBinding
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.Query
-
+import com.google.android.gms.tasks.Task
+import com.google.firebase.database.*
+import io.reactivex.rxjava3.annotations.NonNull
 
 class SecondFragment : Fragment() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var searchEditText: EditText
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var adapter: ContactAdapter
+    private lateinit var editTextSucheName: EditText
+    private lateinit var tvname: TextView
+    private lateinit var tvphone: TextView
+    private lateinit var SearchButton: Button
+    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_second, container, false)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        searchEditText = view.findViewById(R.id.editTextSucheName)
 
-        databaseReference = FirebaseDatabase.getInstance().reference.child("contacts")
+        editTextSucheName = view.findViewById(R.id.editTextSucheName)
+        tvname = view.findViewById(R.id.tvname)
+        tvphone = view.findViewById(R.id.tvphone)
+        SearchButton = view.findViewById(R.id.Searchbutton)
 
-        val query = databaseReference.orderByChild("name")
+        database = FirebaseDatabase.getInstance().reference.child("Contacts")
 
-        val options = FirebaseRecyclerOptions.Builder<Contact>()
-            .setQuery(query, Contact::class.java)
-            .build()
+        SearchButton.setOnClickListener {
+            val name = editTextSucheName.text.toString()
 
-        adapter = ContactAdapter(options)
-        recyclerView.adapter = adapter
+            // Create a listener to handle the search result
+            val listener = object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    // Loop through all contacts in the database
+                    for (contactSnapshot in dataSnapshot.children) {
+                        val contact = contactSnapshot.getValue(Contact::class.java)
+                        // If the name matches, display the contact info and return
+                        if (contact?.name == name) {
+                            tvname.text = contact.name
+                            tvphone.text = contact.phone
+                            return
+                        }
+                    }
+                    // If we haven't returned by now, the name wasn't found
+                    tvname.text = "Name not found"
+                    tvphone.text = ""
+                }
 
-        searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                // do nothing
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle the error
+                }
             }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // do nothing
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val searchText = searchEditText.text.toString().trim()
-                searchContacts(searchText)
-            }
-        })
+            // Query the database for contacts with a matching name
+            val query = database.orderByChild("name").equalTo(name)
+            query.addListenerForSingleValueEvent(listener)
+        }
 
         return view
     }
 
-    private fun searchContacts(query: String) {
-        val firebaseSearchQuery: Query = databaseReference
-            .orderByChild("name")
-            .startAt(query)
-            .endAt(query + "\uf8ff")
-
-        val firebaseRecyclerOptions: FirebaseRecyclerOptions<Contact> =
-            FirebaseRecyclerOptions.Builder<Contact>()
-                .setQuery(firebaseSearchQuery, Contact::class.java)
-                .build()
-
-        adapter = ContactAdapter(firebaseRecyclerOptions)
-        recyclerView.adapter = adapter
-        adapter.startListening()
-    }
 
 }
-
 

@@ -29,7 +29,7 @@ class ContactAdapter(options: FirebaseRecyclerOptions<Contact>) :
         fun bind(contact: Contact) {
             nameTextView.text = contact.name
             phoneTextView.text = contact.phone
-            placeTextView.text = contact.place
+
         }
     }
 }

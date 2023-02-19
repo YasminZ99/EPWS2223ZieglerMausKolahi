@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.myapplicationtesttest.data.Contact
 import com.google.firebase.database.FirebaseDatabase
 
 
@@ -45,8 +46,12 @@ class InsertFragment : Fragment() {
                     val name = nameEditText.text.toString()
                     val phone = phoneEditText.text.toString()
 
+                    val contact = Contact(name, phone)
+
                     // Create a new database reference
-                    val myRef = database.getReference()
+                    val myRef = database.getReference("Contacts")
+                    myRef.child(name).setValue(contact)
+
 
                     // Push the data to the database
                     myRef.push().setValue(mapOf(

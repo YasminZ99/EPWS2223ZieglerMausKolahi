@@ -74,3 +74,100 @@ class ContactAdapter(private val context: Context, private val contactList: List
         } catch (e: Exception) {
             e.message?.let { Log.e("Error", it) }
         }
+
+
+
+////////Complete SecondFragment with Recycler View and Contact Adapter
+
+
+        class SecondFragment : Fragment() {
+
+            private lateinit var recyclerView: RecyclerView
+            private lateinit var searchEditText: EditText
+            private lateinit var databaseReference: DatabaseReference
+            private lateinit var adapter: ContactAdapter
+            private lateinit var binding: FragmentSecondBinding
+
+            override fun onCreateView(
+                inflater: LayoutInflater, container: ViewGroup?,
+                savedInstanceState: Bundle?
+            ): View? {
+                val view = inflater.inflate(R.layout.fragment_second, container, false)
+                searchEditText = view.findViewById(R.id.editTextSucheName)
+
+
+                databaseReference = FirebaseDatabase.getInstance().reference.child("contacts")
+
+                val query = databaseReference.orderByChild("name")
+
+                val options = FirebaseRecyclerOptions.Builder<Contact>()
+                    .setQuery(query, Contact::class.java)
+                    .build()
+
+                adapter = ContactAdapter(options)
+                binding.recyclerView.adapter = adapter
+
+                searchEditText.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable?) {
+                        // do nothing
+                    }
+
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        // do nothing
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        val searchText = searchEditText.text.toString().trim()
+                        searchContacts(searchText)
+                    }
+                })
+
+                return view
+            }
+
+            private fun searchContacts(query: String) {
+                val firebaseSearchQuery: Query = databaseReference
+                    .orderByChild("name")
+                    .startAt(query)
+                    .endAt(query + "\uf8ff")
+
+                val firebaseRecyclerOptions: FirebaseRecyclerOptions<Contact> =
+                    FirebaseRecyclerOptions.Builder<Contact>()
+                        .setQuery(firebaseSearchQuery, Contact::class.java)
+                        .build()
+
+                adapter = ContactAdapter(firebaseRecyclerOptions)
+                recyclerView.adapter = adapter
+                adapter.startListening()
+            }
+
+        }
+
+
+
+
+ ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            private fun readData(contactname: String) {
+
+                databaseReference = FirebaseDatabase.getInstance().getReference("Contacts")
+                databaseReference.child(contactname).get().addOnCompleteListener {
+                if(it.isSuccessful) {
+                    if(it.result.exists()) {
+                        Toast.makeText(activity,"Succesfully Read",Toast.LENGTH_SHORT).show()
+                        val dataSnapshot: DataSnapshot = it.result
+                        val name = dataSnapshot.child("name").getValue().toString()
+                        val phone = dataSnapshot.child("phone").getValue().toString()
+
+                        binding.etname.setText(name)
+                        binding.etphone.setText(phone)
+
+                    }else { Toast.makeText(activity,"User Does not Exist",Toast.LENGTH_SHORT).show()}
+
+                }
+                    else{ Toast.makeText(activity,"Please enter name",Toast.LENGTH_SHORT).show() }
+                }
+
+            }
+
+
