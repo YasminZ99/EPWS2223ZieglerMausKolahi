@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtesttest.data.Contact
+import com.example.myapplicationtesttest.data.ContactAdapter
 import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.*
 
@@ -43,7 +44,7 @@ class ShowContacts : AppCompatActivity() {
                         contactArrayList.add(contact!!) //darf nicht null sein
                     }
 
-    //                contactsRecyclerview.adapter = MyAdapter(contactArrayList)
+                    contactsRecyclerview.adapter = ContactAdapter(contactArrayList)
                 }
 
             }

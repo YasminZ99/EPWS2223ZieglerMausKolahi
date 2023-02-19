@@ -48,16 +48,11 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-       // binding.buttonAdd.setOnClickListener {
-         //   FirebaseApp.initializeApp(this)
-         //   database = FirebaseDatabase.getInstance().getReference("Contacts")
-        //    val contact = Contact("Ursula","5555555")
-        //    database.child(contact.name!!).setValue(contact)
-        //    database.push()
-       //     val intent = Intent(this,insertionActivity::class.java)
-       //     startActivity(intent)
 
-     //       }
+        binding.buttonShow.setOnClickListener {
+            val intent = Intent(this,ShowContacts::class.java)
+            startActivity(intent)
+        }
 
     }
 

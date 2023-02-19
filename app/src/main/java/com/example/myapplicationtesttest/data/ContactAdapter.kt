@@ -9,27 +9,22 @@ import com.example.myapplicationtesttest.R
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class ContactAdapter(options: FirebaseRecyclerOptions<Contact>) :
-    FirebaseRecyclerAdapter<Contact, ContactAdapter.ContactViewHolder>(options) {
+class ContactAdapter(private val data: ArrayList<Contact>) : RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nameTextView: TextView = itemView.findViewById(R.id.name_text_view)
+        val phoneTextView: TextView = itemView.findViewById(R.id.phone_text_view)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.contact_item, parent, false)
-        return ContactViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ContactViewHolder, position: Int, model: Contact) {
-        holder.bind(model)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.nameTextView.text = data[position].name
+        holder.phoneTextView.text = data[position].phone
     }
 
-    class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val nameTextView = itemView.findViewById<TextView>(R.id.nameTextView)
-        private val phoneTextView = itemView.findViewById<TextView>(R.id.phoneTextView)
-        private val placeTextView = itemView.findViewById<TextView>(R.id.placeTextView)
-
-        fun bind(contact: Contact) {
-            nameTextView.text = contact.name
-            phoneTextView.text = contact.phone
-
-        }
-    }
+    override fun getItemCount() = data.size
 }
