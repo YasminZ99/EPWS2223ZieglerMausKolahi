@@ -1,29 +1,20 @@
 package com.example.myapplicationtesttest
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtesttest.data.Contact
-import com.example.myapplicationtesttest.data.ContactAdapter
-import com.example.myapplicationtesttest.databinding.ActivityMainBinding
 import com.example.myapplicationtesttest.databinding.FragmentSecondBinding
-import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.android.gms.tasks.Task
 import com.google.firebase.database.*
-import io.reactivex.rxjava3.annotations.NonNull
 
 class SecondFragment : Fragment() {
 
-    private lateinit var editTextSucheName: EditText
+    private lateinit var sucheName: EditText
     private lateinit var tvname: TextView
     private lateinit var tvphone: TextView
     private lateinit var SearchButton: Button
@@ -34,8 +25,9 @@ class SecondFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_second, container, false)
+        val binding: FragmentSecondBinding
 
-        editTextSucheName = view.findViewById(R.id.editTextSucheName)
+
         //tvname = view.findViewById(R.id.tvname)
        // tvphone = view.findViewById(R.id.tvphone)
         SearchButton = view.findViewById(R.id.Searchbutton)
@@ -43,7 +35,7 @@ class SecondFragment : Fragment() {
         database = FirebaseDatabase.getInstance().reference.child("Contacts")
 
         SearchButton.setOnClickListener {
-            val name = editTextSucheName.text.toString()
+            val name = sucheName.text.toString()
 
             // Create a listener to handle the search result
             val listener = object : ValueEventListener {
