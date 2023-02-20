@@ -1,14 +1,23 @@
 package com.example.myapplicationtesttest
 
-import androidx.appcompat.app.AppCompatActivity
+import android.R.attr.button
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationtesttest.data.Contact
 import com.example.myapplicationtesttest.data.ContactAdapter
-import com.firebase.ui.database.FirebaseListAdapter
 import com.google.firebase.database.*
+import androidx.appcompat.widget.Toolbar
+
+
 
 class ShowContacts : AppCompatActivity() {
 
@@ -17,9 +26,12 @@ class ShowContacts : AppCompatActivity() {
     private lateinit var contactsRecyclerview: RecyclerView
     private lateinit var contactArrayList: ArrayList<Contact>
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_contacts)
+
+
 
         contactsRecyclerview = findViewById(R.id.recyclerView)
         contactsRecyclerview.layoutManager = LinearLayoutManager(this)
@@ -29,6 +41,18 @@ class ShowContacts : AppCompatActivity() {
         // Funktionsaufruf DB Daten beschaffen
         getUserData()
 
+
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
     private fun getUserData() {
 
