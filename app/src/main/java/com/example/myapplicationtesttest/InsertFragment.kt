@@ -22,7 +22,7 @@ class InsertFragment : Fragment() {
 
         private lateinit var database: FirebaseDatabase
 
-        @SuppressLint("MissingInflatedId")
+        @SuppressLint("MissingInflatedId", "UseSwitchCompatOrMaterialCode")
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -38,7 +38,7 @@ class InsertFragment : Fragment() {
             val phoneEditText = view.findViewById<EditText>(R.id.phoneText)
             val placeEditText = view.findViewById<EditText>(R.id.placeText)
             val genderEditText = view.findViewById<EditText>(R.id.genderText)
-            var verfuegbarSwitch = view.findViewById<Switch>(R.id.verfügbarSwitch)
+            val verfuegbarSwitch = view.findViewById<Switch>(R.id.verfügbarSwitch)
             val wartelisteSwitch = view.findViewById<Switch>(R.id.wartelisteSwitch)
             val selbstSwitch = view.findViewById<Switch>(R.id.selbstzahlerSwitch)
             val gesetzlichSwitch = view.findViewById<Switch>(R.id.gestzlichSwitch)
