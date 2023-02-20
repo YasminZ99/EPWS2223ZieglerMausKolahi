@@ -49,11 +49,6 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        binding.buttonShow.setOnClickListener {
-            val intent = Intent(this,ShowContacts::class.java)
-            startActivity(intent)
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

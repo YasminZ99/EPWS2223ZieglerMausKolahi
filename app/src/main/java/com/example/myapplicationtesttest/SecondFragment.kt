@@ -36,8 +36,8 @@ class SecondFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_second, container, false)
 
         editTextSucheName = view.findViewById(R.id.editTextSucheName)
-        tvname = view.findViewById(R.id.tvname)
-        tvphone = view.findViewById(R.id.tvphone)
+        //tvname = view.findViewById(R.id.tvname)
+       // tvphone = view.findViewById(R.id.tvphone)
         SearchButton = view.findViewById(R.id.Searchbutton)
 
         database = FirebaseDatabase.getInstance().reference.child("Contacts")

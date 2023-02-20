@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_insertFragment"
             app:destination="@id/insertFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_showContacts"
+            app:destination="@id/showContacts" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -78,4 +81,9 @@
         android:name="com.example.myapplicationtesttest.ContactProfileFragment"
         android:label="fragment_contact_profile"
         tools:layout="@layout/fragment_contact_profile" />
+    <activity
+        android:id="@+id/showContacts"
+        android:name="com.example.myapplicationtesttest.ShowContacts"
+        android:label="activity_show_contacts"
+        tools:layout="@layout/activity_show_contacts" />
 </navigation>

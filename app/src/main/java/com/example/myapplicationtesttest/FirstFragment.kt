@@ -1,5 +1,6 @@
 package com.example.myapplicationtesttest
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,6 +45,9 @@ class FirstFragment : Fragment() {
         // Wechsel zum Profilbildschirm
         binding.ProfilButton.setOnClickListener{
             findNavController().navigate(R.id.action_FirstFragment_to_profilFragment)
+        }
+        binding.buttonShow.setOnClickListener {
+            findNavController().navigate(R.id.action_FirstFragment_to_showContacts)
         }
     }
 
