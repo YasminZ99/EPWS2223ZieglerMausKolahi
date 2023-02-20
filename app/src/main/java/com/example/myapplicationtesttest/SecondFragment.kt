@@ -52,9 +52,9 @@ class SecondFragment : Fragment() {
                     for (contactSnapshot in dataSnapshot.children) {
                         val contact = contactSnapshot.getValue(Contact::class.java)
                         // If the name matches, display the contact info and return
-                        if (contact?.name == name) {
-                            tvname.text = contact.name
-                            tvphone.text = contact.phone
+                        if (contact?.name.toString().contains(name, ignoreCase = true)) {
+                            tvname.text = contact?.name
+                            tvphone.text = contact?.phone
                             return
                         }
                     }
