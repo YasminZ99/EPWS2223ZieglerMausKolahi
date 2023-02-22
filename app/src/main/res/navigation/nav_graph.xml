@@ -23,6 +23,9 @@
         <action
             android:id="@+id/action_FirstFragment_to_showContacts"
             app:destination="@id/showContacts" />
+        <action
+            android:id="@+id/action_FirstFragment_to_profilMain"
+            app:destination="@id/profilMain" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -70,12 +73,22 @@
         <action
             android:id="@+id/action_loginFragment2_to_profilMain"
             app:destination="@id/profilMain" />
+        <action
+            android:id="@+id/action_loginFragment2_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
     </fragment>
     <fragment
         android:id="@+id/profilMain"
         android:name="com.example.myapplicationtesttest.ProfilMain"
         android:label="fragment_profil_main"
-        tools:layout="@layout/fragment_profil_main" />
+        tools:layout="@layout/fragment_profil_main" >
+        <action
+            android:id="@+id/action_profilMain_to_loginFragment2"
+            app:destination="@id/loginFragment2" />
+        <action
+            android:id="@+id/action_profilMain_to_ProfilFragment"
+            app:destination="@id/ProfilFragment" />
+    </fragment>
     <fragment
         android:id="@+id/contactProfileFragment"
         android:name="com.example.myapplicationtesttest.ContactProfileFragment"

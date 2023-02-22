@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.myapplicationtesttest.databinding.FragmentProfilMainBinding
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.example.myapplicationtesttest.databinding.FragmentLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -20,6 +22,27 @@ class ProfilMain : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil_main, container, false)
+        binding = FragmentProfilMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        init(view)
+
+        binding.tvAusloggen.setOnClickListener {
+            logout()
+        }
+    }
+
+    private fun logout() {
+        mAuth.signOut()
+        navController.navigate(R.id.action_profilMain_to_loginFragment2)
+    }
+
+    private fun init(view: View) {
+        navController = Navigation.findNavController(view)
+        mAuth = FirebaseAuth.getInstance()
     }
 }

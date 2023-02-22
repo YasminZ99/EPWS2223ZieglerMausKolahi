@@ -56,7 +56,7 @@ class ProfilFragment : Fragment () {
    private fun registerUser(email: String, pass: String) {
         mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful)
-                navController.navigate(R.id.action_ProfilFragment_to_profilMain)
+                navController.navigate(R.id.action_ProfilFragment_to_loginFragment2)
             else
                 Toast.makeText(context, it.exception.toString(), Toast.LENGTH_SHORT).show()
 
