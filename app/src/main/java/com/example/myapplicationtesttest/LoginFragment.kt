@@ -42,7 +42,6 @@ class LoginFragment : Fragment () {
             if (email.isNotEmpty() && pass.isNotEmpty()) {
 
                 loginUser(email, pass)
-                navController.navigate(R.id.action_loginFragment2_to_profilMain)
             }
             else
                 Toast.makeText(context, "Empty fields are not allowed", Toast.LENGTH_SHORT).show()

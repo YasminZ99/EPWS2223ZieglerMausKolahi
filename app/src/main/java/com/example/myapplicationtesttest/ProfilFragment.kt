@@ -44,7 +44,6 @@ class ProfilFragment : Fragment () {
                 if (pass == verifyPass) {
 
                     registerUser(email, pass)
-
                 } else {
                     Toast.makeText(context, "Passwörter stimmen nicht überein", Toast.LENGTH_SHORT).show()
                 }

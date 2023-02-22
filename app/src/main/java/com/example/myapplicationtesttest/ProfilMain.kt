@@ -15,11 +15,6 @@ class ProfilMain : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var binding: FragmentProfilMainBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        TODO()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
