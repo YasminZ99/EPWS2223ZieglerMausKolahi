@@ -19,7 +19,7 @@ class SearchResultFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentSearchResultsBinding.inflate(inflater, container, false)
+        binding = FragmentSearchResultsBinding.inflate(inflater, container,false)
         return binding.root
     }
 

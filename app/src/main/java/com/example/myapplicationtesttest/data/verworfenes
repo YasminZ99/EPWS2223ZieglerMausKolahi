@@ -170,6 +170,96 @@ class ContactAdapter(private val context: Context, private val contactList: List
 
             }
 
-//////////////////////////SEARCH DATA OLD
+//////////////////////////SEARCH DATA
+    binding.Searchbutton.setOnClickListener {
+            val placeQuery = binding.sucheOrt.text.toString().trim()
+
+// Build the base query to filter contacts by place
+            var query = databaseReference.orderByChild("place").equalTo(placeQuery)
+
+// Add additional filters based on checkbox values
+            val availableQuery = binding.checkVerfuegbar.isChecked
+            val waitinglistQuery = binding.checkWarte.isChecked
+            val privatQuery = binding.checkPrivat.isChecked
+            val gesetzlQuery = binding.checkGesetzl.isChecked
+            val selbstQuery = binding.checkSelbstz.isChecked
+
+// Create a list to hold the filtered queries
+            val filteredQueries = mutableListOf<Query>()
+
+            if (availableQuery) {
+                val availableQuery = databaseReference.orderByChild("v").equalTo(true)
+                filteredQueries.add(availableQuery)
+            }
+            if (waitinglistQuery) {
+                val waitinglistQuery = databaseReference.orderByChild("w").equalTo(true)
+                filteredQueries.add(waitinglistQuery)
+            }
+            if (privatQuery) {
+                val privatQuery = databaseReference.orderByChild("p").equalTo(true)
+                filteredQueries.add(privatQuery)
+            }
+            if (gesetzlQuery) {
+                val gesetzlQuery = databaseReference.orderByChild("g").equalTo(true)
+                filteredQueries.add(gesetzlQuery)
+            }
+            if (selbstQuery) {
+                val selbstQuery = databaseReference.orderByChild("s").equalTo(true)
+                filteredQueries.add(selbstQuery)
+            }
+
+// Combine the base query and the filtered queries
+            if (filteredQueries.isNotEmpty()) {
+                query = query.orderByChild("dummy") // add a dummy child node to the base query
+                for (filteredQuery in filteredQueries) {
+                    query = query.startAt("0,").endAt("0," + filteredQuery.toString())
+                }
+            }
+
+// Execute the query and display the search results in a fragment
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val contactList: MutableList<Contact> = ArrayList()
+                    for (snapshot in dataSnapshot.children) {
+                        val contact = snapshot.getValue(Contact::class.java)
+                        if (contact != null) {
+                            contactList.add(contact)
+                        }
+                    }
+                    binding.fragmentContainer.removeAllViews()
+                    val searchResultsFragment = SearchResultFragment()
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList("contactList", ArrayList(contactList))
+                    searchResultsFragment.arguments = bundle
+
+
+                    binding.sucheOrt.setVisibility(View.GONE);
+                    binding.textVerfuegbar.setVisibility(View.GONE)
+                    binding.checkVerfuegbar.setVisibility(View.GONE)
+                    binding.checkWarte.setVisibility(View.GONE)
+                    binding.textAbrechnung.setVisibility(View.GONE)
+                    binding.checkGesetzl.setVisibility(View.GONE)
+                    binding.checkPrivat.setVisibility(View.GONE)
+                    binding.checkSelbstz.setVisibility(View.GONE)
+                    binding.textGeschlecht.setVisibility(View.GONE)
+                    binding.checkW.setVisibility(View.GONE)
+                    binding.checkM.setVisibility(View.GONE)
+                    binding.checkD.setVisibility(View.GONE)
+
+
+                    fragmentManager?.commit {
+                        setReorderingAllowed(true)
+                        // Replace whatever is in the fragment_container view with this fragment
+                        replace(R.id.fragment_container, searchResultsFragment)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, "Firebase database error: $databaseError")
+                }
+            })
+
+        }
+
 
 

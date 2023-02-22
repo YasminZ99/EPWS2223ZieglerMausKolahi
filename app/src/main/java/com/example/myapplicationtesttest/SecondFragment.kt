@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
 import com.example.myapplicationtesttest.data.Contact
 import com.example.myapplicationtesttest.databinding.FragmentSecondBinding
 import com.google.firebase.database.*
@@ -41,14 +42,12 @@ class SecondFragment : Fragment() {
             val gesetzlQuery = binding.checkGesetzl.isChecked
             val selbstQuery = binding.checkSelbstz.isChecked
             if (availableQuery || waitinglistQuery || privatQuery || gesetzlQuery || selbstQuery) {
-                val filterConditions = mutableListOf<String>()
-                if (availableQuery) filterConditions.add("v")
-                if (waitinglistQuery) filterConditions.add("w")
-                if (privatQuery) filterConditions.add("p")
-                if (gesetzlQuery) filterConditions.add("g")
-                if (selbstQuery) filterConditions.add("s")
-                val filterString = filterConditions.joinToString(separator = ",")
-                query = query.orderByChild("dummy").startAt(filterString).endAt(filterString + "\uf8ff")
+                query = query.orderByChild("filters/available")
+                if (availableQuery) query = query.equalTo(true)
+                if (waitinglistQuery) query = query.orderByChild("filters/waitingl").equalTo(true)
+                if (privatQuery) query = query.orderByChild("filters/privat").equalTo(true)
+                if (gesetzlQuery) query = query.orderByChild("filters/gesetzl").equalTo(true)
+                if (selbstQuery) query = query.orderByChild("filters/selbstz").equalTo(true)
             }
 
             // Execute the query and display the search results in a fragment
@@ -67,12 +66,24 @@ class SecondFragment : Fragment() {
                     bundle.putParcelableArrayList("contactList", ArrayList(contactList))
                     searchResultsFragment.arguments = bundle
 
-                   // findNavController().navigate(R.id.action_SecondFragment_to_searchResultFragment)
-                    val fragmentTransaction = requireFragmentManager().beginTransaction()
-                    fragmentTransaction.replace(R.id.fragment_container, searchResultsFragment)
-                    fragmentTransaction.addToBackStack(R.id.SecondFragment.toString())
-                    fragmentTransaction.commit()
-                    requireFragmentManager().executePendingTransactions()
+                    binding.sucheOrt.setVisibility(View.GONE);
+                    binding.textVerfuegbar.setVisibility(View.GONE)
+                    binding.checkVerfuegbar.setVisibility(View.GONE)
+                    binding.checkWarte.setVisibility(View.GONE)
+                    binding.textAbrechnung.setVisibility(View.GONE)
+                    binding.checkGesetzl.setVisibility(View.GONE)
+                    binding.checkPrivat.setVisibility(View.GONE)
+                    binding.checkSelbstz.setVisibility(View.GONE)
+                    binding.textGeschlecht.setVisibility(View.GONE)
+                    binding.checkW.setVisibility(View.GONE)
+                    binding.checkM.setVisibility(View.GONE)
+                    binding.checkD.setVisibility(View.GONE)
+
+                    fragmentManager?.commit {
+                        setReorderingAllowed(true)
+                        // Replace whatever is in the fragment_container view with this fragment
+                        replace(R.id.fragment_container, searchResultsFragment)
+                    }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -80,6 +91,7 @@ class SecondFragment : Fragment() {
                 }
             })
         }
+
     }
 
 
