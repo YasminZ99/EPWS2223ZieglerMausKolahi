@@ -34,6 +34,9 @@ class ProfilMain : Fragment() {
         binding.tvAusloggen.setOnClickListener {
             logout()
         }
+        binding.tvFavorites.setOnClickListener{
+            navController.navigate(R.id.action_profilMain_to_favoritesFragment)
+        }
     }
 
     private fun logout() {
