@@ -9,104 +9,78 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myapplicationtesttest.data.Contact
 import com.example.myapplicationtesttest.databinding.FragmentSecondBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 class SecondFragment : Fragment() {
 
     private lateinit var binding: FragmentSecondBinding
+    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
-        val view = inflater.inflate(R.layout.fragment_second, container, false)
-        return view
+        binding = FragmentSecondBinding.inflate(inflater, container, false)
+        databaseReference = FirebaseDatabase.getInstance().getReference("Contacts")
+        setupSearchButton()
+        return binding.root
+
     }
 
-   private fun setupSearchButton() {
-       binding.Searchbutton.setOnClickListener {
-           Log.d("MYLOG", "Search button clicked")
-           val nameQuery = binding.sucheName.text.toString().trim()
-           val placeQuery = binding.sucheOrt.text.toString().trim()
-           var genderQuery = ""
-           if (binding.checkM.isChecked) {
-               genderQuery += "m,"
-           }
-           if (binding.checkW.isChecked) {
-               genderQuery += "f,"
-           }
-           if (binding.checkD.isChecked) {
-               genderQuery += "d,"
-           }
-           if (genderQuery.endsWith(",")) {
-               genderQuery = genderQuery.substring(0, genderQuery.length -1)
-           }
-           Log.d("MYLOG", "Name query: $nameQuery")
-           Log.d("MYLOG", "Place query: $placeQuery")
-           Log.d("MYLOG", "Gender query: $genderQuery")
-           val availableQuery = binding.checkVerfuegbar.isChecked
-           val waitinglistQuery = binding.checkWarte.isChecked
-           val privatQuery = binding.checkPrivat.isChecked
-           val gesetzlQuery = binding.checkGesetzl.isChecked
-           val selbstQuery = binding.checkSelbstz.isChecked
+    private fun setupSearchButton() {
+        binding.Searchbutton.setOnClickListener {
+            val placeQuery = binding.sucheOrt.text.toString().trim()
 
-           val databaseReference = FirebaseDatabase.getInstance().getReference("Contacts")
-           var query = databaseReference.orderByChild("name").startAt(nameQuery).endAt(nameQuery + "\uf8ff")
-           if (!placeQuery.isEmpty()) {
-               query = query.orderByChild("place").equalTo(placeQuery)
-           }
-           if (!genderQuery.isEmpty()) {
-               query = query.orderByChild("gender").equalTo(genderQuery.toString())
-           }
-           if (availableQuery) {
-               query = query.orderByChild("verfuegbar")
-           }
-           if (waitinglistQuery) {
-               query = query.orderByChild("warteliste")
-           }
-           if (privatQuery) {
-               query = query.orderByChild("privatversichert")
-           }
-           if (gesetzlQuery) {
-               query = query.orderByChild("gesetzlich")
-           }
-           if (selbstQuery) {
-               query = query.orderByChild("selbstzahler")
-           }
-           Log.d("MYLOG", "Executing query: $query")
+            // Build the query to filter contacts by place
+            var query = databaseReference.orderByChild("place").equalTo(placeQuery)
 
-           query.addValueEventListener(object : ValueEventListener {
-               override fun onDataChange(dataSnapshot: DataSnapshot) {
-                   Log.d("MYLOG", "Data received from Firebase")
-                   val contactList: MutableList<Contact> = ArrayList()
-                   for (snapshot in dataSnapshot.children) {
-                       val contact = snapshot.getValue(Contact::class.java)
-                       if (contact != null) {
-                           contactList.add(contact)
-                       }
-                   }
-                   Log.d("MYLOG", "Contact list size: ${contactList.size}")
+            // Add additional filters based on checkbox values
+            val availableQuery = binding.checkVerfuegbar.isChecked
+            val waitinglistQuery = binding.checkWarte.isChecked
+            val privatQuery = binding.checkPrivat.isChecked
+            val gesetzlQuery = binding.checkGesetzl.isChecked
+            val selbstQuery = binding.checkSelbstz.isChecked
+            if (availableQuery || waitinglistQuery || privatQuery || gesetzlQuery || selbstQuery) {
+                val filterConditions = mutableListOf<String>()
+                if (availableQuery) filterConditions.add("v")
+                if (waitinglistQuery) filterConditions.add("w")
+                if (privatQuery) filterConditions.add("p")
+                if (gesetzlQuery) filterConditions.add("g")
+                if (selbstQuery) filterConditions.add("s")
+                val filterString = filterConditions.joinToString(separator = ",")
+                query = query.orderByChild("dummy").startAt(filterString).endAt(filterString + "\uf8ff")
+            }
 
-                   val searchResultsFragment = SearchResultFragment()
-                   val bundle = Bundle()
-                   bundle.putParcelableArrayList("contactList", ArrayList(contactList))
-                   searchResultsFragment.arguments = bundle
-                   Log.d("MYLOG", "Opening search results fragment")
-                   val fragmentTransaction = requireFragmentManager().beginTransaction()
-                   fragmentTransaction.replace(R.id.fragment_container, searchResultsFragment)
-                   fragmentTransaction.addToBackStack(null)
-                   fragmentTransaction.commit()
-               }
+            // Execute the query and display the search results in a fragment
+            query.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val contactList: MutableList<Contact> = ArrayList()
+                    for (snapshot in dataSnapshot.children) {
+                        val contact = snapshot.getValue(Contact::class.java)
+                        if (contact != null) {
+                            contactList.add(contact)
+                        }
+                    }
+                    binding.fragmentContainer.removeAllViews()
+                    val searchResultsFragment = SearchResultFragment()
+                    val bundle = Bundle()
+                    bundle.putParcelableArrayList("contactList", ArrayList(contactList))
+                    searchResultsFragment.arguments = bundle
 
-               override fun onCancelled(databaseError: DatabaseError) {
-                   Log.e(TAG, "Firebase database error: $databaseError")
-               }
-           })
-       }
+                   // findNavController().navigate(R.id.action_SecondFragment_to_searchResultFragment)
+                    val fragmentTransaction = requireFragmentManager().beginTransaction()
+                    fragmentTransaction.replace(R.id.fragment_container, searchResultsFragment)
+                    fragmentTransaction.addToBackStack(R.id.SecondFragment.toString())
+                    fragmentTransaction.commit()
+                    requireFragmentManager().executePendingTransactions()
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.e(TAG, "Firebase database error: $databaseError")
+                }
+            })
+        }
+    }
 
 
-   }
 }

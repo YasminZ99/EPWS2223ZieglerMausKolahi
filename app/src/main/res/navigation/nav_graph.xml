@@ -32,10 +32,9 @@
         android:name="com.example.myapplicationtesttest.SecondFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
-
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SecondFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
     </fragment>
     <fragment
         android:id="@+id/ProfilFragment"
@@ -99,4 +98,9 @@
         android:name="com.example.myapplicationtesttest.ShowContacts"
         android:label="activity_show_contacts"
         tools:layout="@layout/activity_show_contacts" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.myapplicationtesttest.SearchResultFragment"
+        android:label="fragment_search_results"
+        tools:layout="@layout/fragment_search_results" />
 </navigation>
