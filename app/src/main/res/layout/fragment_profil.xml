@@ -5,6 +5,7 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF0D6"
     tools:context=".ProfilFragment">
 
     <com.google.android.material.textfield.TextInputEditText
@@ -55,6 +56,7 @@
         android:layout_marginTop="32dp"
         android:text="Bereits registriert? Login"
         android:textSize="18dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +67,9 @@
         android:id="@+id/SignUpB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#F2B988"
         android:text="Registrieren"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/textLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

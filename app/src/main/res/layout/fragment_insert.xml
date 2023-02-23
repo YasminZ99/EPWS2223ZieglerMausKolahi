@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFF0D6" >
 
     <EditText
         android:id="@+id/nameText"
@@ -37,7 +38,9 @@
         android:id="@+id/submitButton"
         android:layout_width="322dp"
         android:layout_height="55dp"
-        android:text="Button"
+        android:backgroundTint="#F2B988"
+        android:text="Submit"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
