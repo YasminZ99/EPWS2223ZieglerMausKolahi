@@ -30,10 +30,10 @@ class SecondFragment : Fragment() {
 
     private fun setupSearchButton() {
         binding.Searchbutton.setOnClickListener {
-            val placeQuery = binding.sucheOrt.text.toString().trim()
+            val placeQuery = binding.sucheOrt.text.toString().trim().lowercase()
 
             // Build the query to filter contacts by place
-            var query = databaseReference.orderByChild("place").equalTo(placeQuery)
+            var query = databaseReference.orderByChild("place").startAt(placeQuery).endAt(placeQuery + "\uf8ff")
 
             // Add additional filters based on checkbox values
             val availableQuery = binding.checkVerfuegbar.isChecked

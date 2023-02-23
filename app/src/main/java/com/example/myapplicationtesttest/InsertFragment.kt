@@ -68,15 +68,13 @@ class InsertFragment : Fragment() {
 
                     // Create a new database reference
                     val myRef = database.getReference("Contacts")
-                    myRef.child(name).setValue(contact)
-
 
                     // Push the data to the database
                     myRef.push().setValue(mapOf(
-                        "name" to name,
+                        "name" to name.lowercase(),
                         "phone" to phone,
-                        "place" to place,
-                        "gender" to gender,
+                        "place" to place.lowercase(),
+                        "gender" to gender.lowercase(),
                         "istVerfuegbar" to istVerfuegbar,
                         "Warteliste" to Warteliste,
                         "selbstzahler" to selbstzahler,
@@ -90,6 +88,16 @@ class InsertFragment : Fragment() {
                 } catch (e: Exception) {
                     Log.e("MyFragment", "Error pushing data to the database", e)
                 }
+                nameEditText.setText("")
+                placeEditText.setText("")
+                phoneEditText.setText("")
+                genderEditText.setText("")
+                verfuegbarSwitch.isChecked = false
+                wartelisteSwitch.isChecked = false
+                selbstSwitch.isChecked = false
+                gesetzlichSwitch.isChecked = false
+                privatSwitch.isChecked = false
+
             }
 
             return view
